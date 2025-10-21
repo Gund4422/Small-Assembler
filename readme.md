@@ -1,13 +1,13 @@
 # SASM – The Smallest Assembler Ever
 
-SASM is an ultra-lightweight x86 assembler written in pure C. At only ~309 lines of code and ~12 KB when compiled with [TCC](https://bellard.org/tcc/)
-, it supports 263 x86 instructions including SSE, AVX, x87, MMX, and even AVX-512.
+SASM is an ultra-lightweight x86 assembler written in pure C. At only 500+ lines of code and ~30 KB when compiled with [TCC](https://bellard.org/tcc/)
+, it supports 400+ x86 instructions including SSE, AVX, x87, MMX, and even AVX-512.
 
 It’s fast, standalone, and minimal, making it perfect for hobby OS development, learning x86 assembly, or any project where you want a tiny but capable assembler.
 
 ## Features
 
-Supports 263 x86 instructions: MOV, ADD, SUB, PUSH/POP, JMP/CALL, SSE/AVX, x87, MMX, AVX-512.
+Supports 400+ x86 instructions: MOV, ADD, SUB, PUSH/POP, JMP/CALL, SSE/AVX, x87, MMX, AVX-512.
 
 Handles labels and relative jumps/calls.
 
@@ -51,7 +51,7 @@ Memory operands ([EAX]) are not fully implemented.
 | ------------------------------ | ------------------------------------------ | ----------------------------- | ----------------------------- | --------------------------------------------------- |
 | **Binary Size**                | Part of binutils, hundreds of MB installed | ~1–2 MB                       | ~1.9 MB                       | ~12 KB                                              |
 | **Lines of Code**              | Very large (binutils)                      | Tens of thousands             | Tens of thousands             | 309                                                 |
-| **Instruction Coverage**       | Full x86/x86-64, ARM, others               | Full x86/x86-64               | Full x86/x86-64               | ~400 x86 instructions (SSE, AVX, x87, MMX, AVX-512) |
+| **Instruction Coverage**       | Full x86/x86-64, ARM, others               | Full x86/x86-64               | Full x86/x86-64               | 400+ x86 instructions (SSE, AVX, x87, MMX, AVX-512) |
 | **Macros / Advanced Features** | Yes                                        | Yes                           | Yes                           | No (minimalistic)                                   |
 | **Labels / Jumps**             | Yes                                        | Yes                           | Yes                           | Yes                                                 |
 | **Memory Operand Support**     | Full                                       | Full                          | Full                          | Partial (mostly reg→reg / reg→imm)                  |
@@ -61,6 +61,7 @@ Memory operands ([EAX]) are not fully implemented.
 
 ## License
 GPL v3
+
 
 
 
