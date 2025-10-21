@@ -49,8 +49,8 @@ Memory operands ([EAX]) are not fully implemented.
 ## GAS vs NASM vs FASM vs Small Assembler
 | Feature                        | GAS (GNU Assembler)                        | FASM                          | NASM                          | SASM (This Project)                                 |
 | ------------------------------ | ------------------------------------------ | ----------------------------- | ----------------------------- | --------------------------------------------------- |
-| **Binary Size**                | Part of binutils, hundreds of MB installed | ~1–2 MB                       | ~1.9 MB                       | ~12 KB                                              |
-| **Lines of Code**              | Very large (binutils)                      | Tens of thousands             | Tens of thousands             | 309                                                 |
+| **Binary Size**                | Part of binutils, hundreds of MB installed | ~1–2 MB                       | ~1.9 MB                       | ~30 KB                                              |
+| **Lines of Code**              | Very large (binutils)                      | Tens of thousands             | Tens of thousands             | 500 LOC                                                 |
 | **Instruction Coverage**       | Full x86/x86-64, ARM, others               | Full x86/x86-64               | Full x86/x86-64               | 400+ x86 instructions (SSE, AVX, x87, MMX, AVX-512) |
 | **Macros / Advanced Features** | Yes                                        | Yes                           | Yes                           | No (minimalistic)                                   |
 | **Labels / Jumps**             | Yes                                        | Yes                           | Yes                           | Yes                                                 |
@@ -61,6 +61,7 @@ Memory operands ([EAX]) are not fully implemented.
 
 ## License
 GPL v3
+
 
 
 
