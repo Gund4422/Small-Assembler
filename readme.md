@@ -15,7 +15,7 @@ Supports registers: 32-bit (EAX..EDI), 16-bit (AX..DI), 8-bit (AL..BH).
 
 Produces flat binaries (.bin) from assembly source.
 
-Compiles with TCC into a single executable (~12 KB).
+Compiles with TCC into a single executable (~30 KB).
 
 Extremely lightweight and fast, perfect for small projects.
 
@@ -57,10 +57,11 @@ Memory operands ([EAX]) are not fully implemented.
 | **Memory Operand Support**     | Full                                       | Full                          | Full                          | Partial (mostly reg→reg / reg→imm)                  |
 | **Platform**                   | Linux, Unix, Windows (via Cygwin/MSYS2)    | Windows / Linux               | Cross-platform                | Windows / Linux (via TCC)                           |
 | **Use Case**                   | Professional assembly, OS dev, multi-arch  | Professional assembly, OS dev | Professional assembly, OS dev | Lightweight projects, learning, hobby OS dev        |
-| **Compilation**                | Part of GNU binutils                       | Standard C / custom           | Standard C                    | Single-file, compiled with TCC (~12 KB)             |
+| **Compilation**                | Part of GNU binutils                       | Standard C / custom           | Standard C                    | Single-file, compiled with TCC (~30 KB)             |
 
 ## License
 GPL v3
+
 
 
 
