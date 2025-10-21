@@ -1,7 +1,6 @@
 ;
-/* SASM, version 1.6 
-Includes 100s of x86 opcodes
-CAPITAL STUFF BTW*/
+/* SASM, version 1.8
+theres an actual semicolon at the start because error on without it*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -350,6 +349,7 @@ OpCode32 opcodes[] = {
 
     // Misc / NOP-like padding for multi-byte instructions
     {"NOPW", 0x66, 0x0F}, {"NOPD", 0x0F, 0x1F}, {"NOPQ", 0x0F, 0x1F},
+
     // AVX-512 masked / scatter-gather / conversions
     {"VPCMPD512_MASK", 0x62, 0xF9}, {"VPCMPQ512_MASK", 0x62, 0xFA},
     {"VPCMPEQD512", 0x62, 0xFB}, {"VPCMPEQQ512", 0x62, 0xFC}, {"VPCMPGTD512", 0x62, 0xFD},
@@ -452,8 +452,25 @@ Reg32 regs[] = {
     {"SP",4}, {"BP",5}, {"SI",6}, {"DI",7},
     {"AL",0}, {"CL",1}, {"DL",2}, {"BL",3},
     {"AH",4}, {"CH",5}, {"DH",6}, {"BH",7},
-    {"",0}
+
+    {"XMM0",0}, {"XMM1",1}, {"XMM2",2}, {"XMM3",3},
+    {"XMM4",4}, {"XMM5",5}, {"XMM6",6}, {"XMM7",7},
+
+    {"",0} // terminator
 };
+
+const char* directives[] = {
+    "SECTION",
+    "DATA",
+    "TEXT",
+    "GLOBAL",
+    "EXTERN"
+};
+
+#define NUM_DIRECTIVES (sizeof(directives)/sizeof(directives[0]))
+
+
+#define NUM_OPCODES (sizeof(opcodes) / sizeof(opcodes[0]))
 
 Label labels[MAX_LABELS];
 int label_count=0;
@@ -473,11 +490,15 @@ int tokenize(char *line, char tokens[MAX_TOKENS][32]){
     return count;
 }
 
-OpCode32* find_opcode(char *name){
-    for(int i=0; opcodes[i].name[0]; i++)
-        if(strcmp(opcodes[i].name,name)==0) return &opcodes[i];
+OpCode32* find_opcode(const char *mnemonic, int operand_count) {
+    for (int i = 0; i < NUM_OPCODES; i++) {
+        if (strcmp(opcodes[i].name, mnemonic) == 0) {
+            return &opcodes[i]; // return first match, ignore operand_count
+        }
+    }
     return NULL;
 }
+
 
 int find_reg(char *name){
     for(int i=0; regs[i].name[0]; i++)
@@ -505,6 +526,16 @@ int is_label(char *token){
 int assemble_line(char tokens[MAX_TOKENS][32], int count, unsigned char *out, int pos) {
     if (count == 0) return 0;
 
+    // Skip comments
+    if (tokens[0][0] == ';') return 0;
+
+    // Skip directives
+    for (int i = 0; i < NUM_DIRECTIVES; i++) {
+        if (strcmp(tokens[0], directives[i]) == 0) {
+            return 0; // optionally handle directives later
+        }
+    }
+
     // Handle label
     if (is_label(tokens[0])) {
         tokens[0][strlen(tokens[0])-1] = 0; // remove colon
@@ -512,84 +543,75 @@ int assemble_line(char tokens[MAX_TOKENS][32], int count, unsigned char *out, in
         return 0;
     }
 
-    OpCode32 *op = find_opcode(tokens[0]);
-    if (!op) { 
-        printf("Unknown instruction: %s\n", tokens[0]);
-        exit(1);
+    // Find opcode
+    OpCode32 *op = find_opcode(tokens[0], count);
+    if (!op) {
+        fprintf(stderr, "Unknown instruction or unsupported operand combination: %s\n", tokens[0]);
+        return 0; // skip instead of exit
     }
 
     int len = 0;
+    int r1 = (count > 1) ? find_reg(tokens[1]) : -1;
+    int r2 = (count > 2) ? find_reg(tokens[2]) : -1;
 
     // Single-byte instructions
     if (count == 1) {
-        out[0] = op->opcode1;
+        if (out) out[0] = op->opcode1;
         return 1;
     }
 
-    int r1 = find_reg(tokens[1]);
-
     // Two-operand instructions
     if (count == 3) {
-        int r2 = find_reg(tokens[2]);
-
-        // reg -> reg
-        if (r1 >= 0 && r2 >= 0) {
-            out[0] = op->opcode_reg_reg;
-            out[1] = (r2 << 3) | r1; // ModRM
+        if (r1 >= 0 && r2 >= 0) { // reg -> reg or xmm -> xmm
+            if (out) {
+                out[0] = op->opcode_reg_reg != 0 ? op->opcode_reg_reg : op->opcode1;
+                out[1] = 0xC0 | (r2 << 3) | r1; // ModRM
+            }
             len = 2;
-        }
-        // reg -> imm
-        else if (r1 >= 0) {
+        } else if (r1 >= 0) { // reg -> imm
             int imm = atoi(tokens[2]);
-            out[0] = op->opcode_reg_imm + r1;
-            // Determine immediate size (default 4 bytes)
-            if (op->opcode_reg_imm >= 0xB0 && op->opcode_reg_imm <= 0xB7) {
-                out[1] = imm & 0xFF; // 8-bit
-                len = 2;
-            } else if (op->opcode_reg_imm == 0xB8) {
-                out[1] = imm & 0xFF;
-                out[2] = (imm >> 8) & 0xFF;
-                out[3] = (imm >> 16) & 0xFF;
-                out[4] = (imm >> 24) & 0xFF; // 32-bit
-                len = 5;
-            } else {
+            if (out) {
+                out[0] = op->opcode_reg_imm + r1;
                 out[1] = imm & 0xFF;
                 out[2] = (imm >> 8) & 0xFF;
                 out[3] = (imm >> 16) & 0xFF;
                 out[4] = (imm >> 24) & 0xFF;
-                len = 5;
-            }
-        } else {
-            printf("Cannot encode operands: %s %s %s\n", tokens[0], tokens[1], tokens[2]);
-            exit(1);
-        }
-    }
-    // One-operand instructions (like JMP label)
-    else if (count == 2) {
-        if (strcmp(op->name,"JMP")==0 || strcmp(op->name,"CALL")==0) {
-            int addr = find_label(tokens[1]);
-            out[0] = op->opcode1;
-            if (addr >= 0) {
-                int rel = addr - (pos + 5); // 32-bit relative
-                out[1] = rel & 0xFF;
-                out[2] = (rel >> 8) & 0xFF;
-                out[3] = (rel >> 16) & 0xFF;
-                out[4] = (rel >> 24) & 0xFF;
-            } else {
-                out[1] = out[2] = out[3] = out[4] = 0; // unresolved
             }
             len = 5;
-        } else if (r1 >= 0) { // e.g., INC r32
-            out[0] = op->opcode_reg_reg + r1;
+        } else {
+            fprintf(stderr, "Cannot encode operands: %s %s %s\n", tokens[0], tokens[1], tokens[2]);
+            return 0;
+        }
+    }
+    // One-operand instructions
+    else if (count == 2) {
+        if ((strcmp(op->name, "JMP") == 0 || strcmp(op->name, "CALL") == 0)) {
+            int addr = find_label(tokens[1]);
+            if(out) out[0] = op->opcode1;
+            if(addr >= 0) {
+                int rel = addr - (pos + 5);
+                if(out) {
+                    out[1] = rel & 0xFF;
+                    out[2] = (rel >> 8) & 0xFF;
+                    out[3] = (rel >> 16) & 0xFF;
+                    out[4] = (rel >> 24) & 0xFF;
+                }
+            } else if(out) {
+                out[1] = out[2] = out[3] = out[4] = 0;
+            }
+            len = 5;
+        } else if(r1 >= 0) { // INC r32 or similar
+            if(out) out[0] = op->opcode_reg_reg + r1;
             len = 1;
         } else {
-            printf("Cannot encode line: %s %s\n", tokens[0], tokens[1]);
-            exit(1);
+            fprintf(stderr, "Cannot encode line: %s %s\n", tokens[0], tokens[1]);
+            return 0;
         }
     }
 
     return len;
 }
+
 
 void assemble_file(const char *infile, const char *outfile){
     FILE *f=fopen(infile,"r");
