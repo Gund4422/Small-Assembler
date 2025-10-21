@@ -46,7 +46,7 @@ Immediate values are handled for reg→imm instructions.
 
 Memory operands ([EAX]) are not fully implemented.
 
-## GAS (gnu assembler) vsNASM vs FASM vs Small Assembler
+## GAS vs NASM vs FASM vs Small Assembler
 | Feature                        | GAS (GNU Assembler)                        | FASM                          | NASM                          | SASM (This Project)                                 |
 | ------------------------------ | ------------------------------------------ | ----------------------------- | ----------------------------- | --------------------------------------------------- |
 | **Binary Size**                | Part of binutils, hundreds of MB installed | ~1–2 MB                       | ~1.9 MB                       | ~12 KB                                              |
@@ -61,6 +61,7 @@ Memory operands ([EAX]) are not fully implemented.
 
 ## License
 GPL v3
+
 
 
 
