@@ -46,21 +46,22 @@ Immediate values are handled for reg→imm instructions.
 
 Memory operands ([EAX]) are not fully implemented.
 
-## NASM vs FASM vs Small Assembler
-| Feature                        | FASM                          | NASM                          | SASM (This Project)                                 |
-| ------------------------------ | ----------------------------- | ----------------------------- | --------------------------------------------------- |
-| **Binary Size**                | ~1–2 MB                       | ~1.9 MB                       | ~12 KB                                              |
-| **Lines of Code**              | Tens of thousands             | Tens of thousands             | 309                                                 |
-| **Instruction Coverage**       | Full x86/x86-64               | Full x86/x86-64               | ~400 x86 instructions (SSE, AVX, x87, MMX, AVX-512) |
-| **Macros / Advanced Features** | Yes                           | Yes                           | No (minimalistic)                                   |
-| **Labels / Jumps**             | Yes                           | Yes                           | Yes                                                 |
-| **Memory Operand Support**     | Yes                           | Yes                           | Partial (mostly reg→reg / reg→imm)                  |
-| **Platform**                   | Windows / Linux               | Cross-platform                | Windows / Linux (via TCC)                           |
-| **Use Case**                   | Professional assembly, OS dev | Professional assembly, OS dev | Lightweight projects, learning, hobby OS dev        |
-| **Compilation**                | Standard C / custom           | Standard C                    | Single-file, compiled with TCC (~12 KB)             |
+## GAS (gnu assembler) vsNASM vs FASM vs Small Assembler
+| Feature                        | GAS (GNU Assembler)                        | FASM                          | NASM                          | SASM (This Project)                                 |
+| ------------------------------ | ------------------------------------------ | ----------------------------- | ----------------------------- | --------------------------------------------------- |
+| **Binary Size**                | Part of binutils, hundreds of MB installed | ~1–2 MB                       | ~1.9 MB                       | ~12 KB                                              |
+| **Lines of Code**              | Very large (binutils)                      | Tens of thousands             | Tens of thousands             | 309                                                 |
+| **Instruction Coverage**       | Full x86/x86-64, ARM, others               | Full x86/x86-64               | Full x86/x86-64               | ~400 x86 instructions (SSE, AVX, x87, MMX, AVX-512) |
+| **Macros / Advanced Features** | Yes                                        | Yes                           | Yes                           | No (minimalistic)                                   |
+| **Labels / Jumps**             | Yes                                        | Yes                           | Yes                           | Yes                                                 |
+| **Memory Operand Support**     | Full                                       | Full                          | Full                          | Partial (mostly reg→reg / reg→imm)                  |
+| **Platform**                   | Linux, Unix, Windows (via Cygwin/MSYS2)    | Windows / Linux               | Cross-platform                | Windows / Linux (via TCC)                           |
+| **Use Case**                   | Professional assembly, OS dev, multi-arch  | Professional assembly, OS dev | Professional assembly, OS dev | Lightweight projects, learning, hobby OS dev        |
+| **Compilation**                | Part of GNU binutils                       | Standard C / custom           | Standard C                    | Single-file, compiled with TCC (~12 KB)             |
 
 ## License
 GPL v3
+
 
 
 
