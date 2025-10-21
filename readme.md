@@ -46,8 +46,22 @@ Immediate values are handled for reg→imm instructions.
 
 Memory operands ([EAX]) are not fully implemented.
 
-# License
+## NASM vs FASM vs Small Assembler
+| Feature                        | FASM                          | NASM                          | SASM (This Project)                                 |
+| ------------------------------ | ----------------------------- | ----------------------------- | --------------------------------------------------- |
+| **Binary Size**                | ~1–2 MB                       | ~1.9 MB                       | ~12 KB                                              |
+| **Lines of Code**              | Tens of thousands             | Tens of thousands             | 309                                                 |
+| **Instruction Coverage**       | Full x86/x86-64               | Full x86/x86-64               | ~400 x86 instructions (SSE, AVX, x87, MMX, AVX-512) |
+| **Macros / Advanced Features** | Yes                           | Yes                           | No (minimalistic)                                   |
+| **Labels / Jumps**             | Yes                           | Yes                           | Yes                                                 |
+| **Memory Operand Support**     | Yes                           | Yes                           | Partial (mostly reg→reg / reg→imm)                  |
+| **Platform**                   | Windows / Linux               | Cross-platform                | Windows / Linux (via TCC)                           |
+| **Use Case**                   | Professional assembly, OS dev | Professional assembly, OS dev | Lightweight projects, learning, hobby OS dev        |
+| **Compilation**                | Standard C / custom           | Standard C                    | Single-file, compiled with TCC (~12 KB)             |
+
+## License
 GPL v3
+
 
 
 
