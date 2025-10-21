@@ -27,21 +27,15 @@ Compile SASM using TCC:
 
 
 Assemble a file:
-
-```bash
-sasm input.asm output.bin```
-
+sasm input.asm output.bin
 
 Example ASM file (hello.asm):
-
-```MOV EAX, 1
+MOV EAX, 1
 MOV EBX, 0
-INT 0x80```
-
-
+INT 0x80
 Assemble it:
 
-```sasm hello.asm hello.bin```
+sasm hello.asm hello.bin
 
 ## Notes
 
