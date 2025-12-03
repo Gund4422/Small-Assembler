@@ -30,9 +30,9 @@ Assemble a file:
 `sasm input.asm output.bin`
 
 Example ASM file (hello.asm):
-`MOV EAX, 1
-MOV EBX, 0
-INT 0x80`
+`MOV EAX, 1`
+`MOV EBX, 0`
+`INT 0x80`
 Assemble it:
 
 `sasm hello.asm hello.bin`
@@ -61,6 +61,7 @@ Memory operands ([EAX]) are not fully implemented.
 
 ## License
 GPL v3
+
 
 
 
