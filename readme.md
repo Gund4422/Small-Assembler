@@ -1,6 +1,6 @@
 # SASM – The Smallest Assembler Ever
 
-SASM is an ultra-lightweight x86 assembler written in pure C. At only ~309 lines of code and ~30 KB when compiled with TCC, it supports ~400 x86 instructions including SSE, AVX, x87, MMX, and even AVX-512.
+SASM is an ultra-lightweight x86 assembler written in pure C. At only 650+ lines of code and ~30 KB when compiled with TCC, it supports ~400 x86 instructions including SSE, AVX, x87, MMX, and even AVX-512.
 
 It’s fast, standalone, and minimal, making it perfect for hobby OS development, learning x86 assembly, or any project where you want a tiny but capable assembler.
 
@@ -10,11 +10,11 @@ Supports ~400 x86 instructions: MOV, ADD, SUB, PUSH/POP, JMP/CALL, SSE/AVX, x87,
 
 Handles labels and relative jumps/calls.
 
-Supports registers: 32-bit (EAX..EDI), 16-bit (AX..DI), 8-bit (AL..BH).
+Supports registers: XMM, 32-bit (EAX..EDI), 16-bit (AX..DI), 8-bit (AL..BH).
 
 Produces flat binaries (.bin) from assembly source.
 
-Compiles with TCC into a single executable (~12 KB).
+Compiles with TCC into a single executable (~30 KB).
 
 Extremely lightweight and fast, perfect for small projects.
 
@@ -51,3 +51,4 @@ Memory operands ([EAX]) are not fully implemented.
 # License
 
 GPL v3
+
