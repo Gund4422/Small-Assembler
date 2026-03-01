@@ -52,3 +52,5 @@ Memory operands ([EAX]) are not fully implemented.
 
 GPL v3
 
+
+[EAX] = https://en.wikipedia.org/wiki/X86#32-bit
