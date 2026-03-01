@@ -49,8 +49,4 @@ Immediate values are handled for reg→imm instructions.
 Memory operands ([EAX]) are not fully implemented.
 
 # License
-
 GPL v3
-
-
-[EAX] = https://en.wikipedia.org/wiki/X86#32-bit
